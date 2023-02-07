@@ -21,8 +21,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel> : AppCompatAct
         initListener()
     }
 
-open fun isConnection(){}
-open fun initViews(){}
-open fun initViewModel(){}
-open fun initListener(){}
+    open fun isConnection() {}
+    open fun initViews() {}
+    open fun initViewModel() {}
+    open fun initListener() {}
 }

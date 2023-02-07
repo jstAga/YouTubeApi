@@ -4,10 +4,10 @@ data class Playlist(
     val items: List<Item>,
 )
 
-
 data class Item(
     val id: String,
-    val snippet: Snippet
+    val snippet: Snippet,
+    val contentDetails : ContentDetails
 )
 
 data class Snippet(
@@ -26,6 +26,10 @@ data class High(
     val height: Int,
     val url: String,
     val width: Int
+)
+
+data class ContentDetails(
+    val itemCount : Int
 )
 
 
