@@ -9,4 +9,6 @@
     <color name="video_title_fade">#CC000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
+    <color name="white_stroke">#E1E1E1</color>
+    <color name="light_gray">#F6F6F6</color>
 </resources>

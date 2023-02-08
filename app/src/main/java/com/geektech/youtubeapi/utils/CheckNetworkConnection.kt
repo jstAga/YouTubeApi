@@ -1,4 +1,4 @@
-package com.geektech.youtubeapi
+package com.geektech.youtubeapi.utils
 
 import android.annotation.SuppressLint
 import android.app.Application

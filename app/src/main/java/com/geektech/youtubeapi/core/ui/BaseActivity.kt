@@ -1,4 +1,4 @@
-package com.geektech.youtubeapi.base
+package com.geektech.youtubeapi.core.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +19,12 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel> : AppCompatAct
         initViews()
         initViewModel()
         initListener()
+        initObserver()
     }
 
     open fun isConnection() {}
     open fun initViews() {}
     open fun initViewModel() {}
     open fun initListener() {}
+    open fun initObserver() {}
 }

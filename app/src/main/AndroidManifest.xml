@@ -26,7 +26,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.video.VideoActivity"
+            android:name=".ui.playlistItem.PlaylistItemActivity"
             android:exported="false"
             android:label="@string/title_activity_video"
             android:theme="@style/Theme.YoutubeApi.NoActionBar">

@@ -1,4 +1,4 @@
-package com.geektech.youtubeapi.model
+package com.geektech.youtubeapi.data.remote.model
 
 data class Playlist(
     val items: List<Item>,
@@ -19,14 +19,13 @@ data class Snippet(
 )
 
 data class Thumbnails(
-    val high: High,
+    val medium: Medium,
 )
 
-data class High(
-    val height: Int,
+data class Medium(
     val url: String,
-    val width: Int
 )
+
 
 data class ContentDetails(
     val itemCount : Int

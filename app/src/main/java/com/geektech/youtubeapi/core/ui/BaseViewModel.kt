@@ -1,4 +1,4 @@
-package com.geektech.youtubeapi.base
+package com.geektech.youtubeapi.core.ui
 
 import androidx.lifecycle.ViewModel
 

@@ -1,6 +1,7 @@
-package com.geektech.youtubeapi.remote
+package com.geektech.youtubeapi.core.network
 
 import com.geektech.youtubeapi.BuildConfig
+import com.geektech.youtubeapi.data.remote.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +16,8 @@ class RetrofitClient {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val okHttpClient = OkHttpClient.Builder().writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS).connectTimeout(20, TimeUnit.SECONDS).build()
+                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(interceptor)
+                .connectTimeout(20, TimeUnit.SECONDS).build()
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)

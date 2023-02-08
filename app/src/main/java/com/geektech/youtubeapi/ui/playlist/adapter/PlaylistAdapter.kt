@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.geektech.youtubeapi.databinding.ItemPlaylistBinding
-import com.geektech.youtubeapi.model.Item
+import com.geektech.youtubeapi.data.remote.model.Item
 
 class PlaylistAdapter(val onCLick: (position: Int) -> Unit) :
     Adapter<PlaylistAdapter.PlaylistViewHolder>() {
@@ -44,8 +44,13 @@ class PlaylistAdapter(val onCLick: (position: Int) -> Unit) :
         @SuppressLint("SetTextI18n")
         fun bind(model: Item) {
             with(binding) {
-                ivImage.load(model.snippet.thumbnails.high.url)
-                tvPlaylistTitle.text = model.snippet.title
+                ivImage.load(model.snippet.thumbnails.medium.url)
+
+                if (model.snippet.title.length <= 12){
+                    tvPlaylistTitle.text = model.snippet.title
+                } else {
+                    tvPlaylistTitle.text = model.snippet.title.substring(0,12) + " ..."
+                }
                 tvTitle.text = model.snippet.title
                 tvSeries.text = "${model.contentDetails.itemCount} video series"
             }
