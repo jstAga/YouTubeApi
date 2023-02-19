@@ -1,62 +1,35 @@
 package com.geektech.youtubeapi.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.geektech.youtubeapi.BuildConfig
-import com.geektech.youtubeapi.data.remote.ApiService
-import com.geektech.youtubeapi.core.network.RetrofitClient
+import androidx.lifecycle.liveData
 import com.geektech.youtubeapi.core.network.result.Resource
+import com.geektech.youtubeapi.data.remote.RemoteDataSource
 import com.geektech.youtubeapi.data.remote.model.Playlist
 import com.geektech.youtubeapi.data.remote.model.PlaylistItem
-import com.geektech.youtubeapi.utils.Constant
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.geektech.youtubeapi.data.remote.model.Video
+import kotlinx.coroutines.Dispatchers
 
 class Repository {
-    private val apiService: ApiService by lazy {
-        RetrofitClient.create()
+    private val dataSource: RemoteDataSource by lazy {
+        RemoteDataSource()
     }
 
-    fun getPlaylists(): LiveData<Resource<Playlist>> {
-        val data = MutableLiveData<Resource<Playlist>>()
-
-        data.value = Resource.loading()
-
-        apiService.getPlaylists(BuildConfig.API_KEY, Constant.part, Constant.channelId)
-            .enqueue(object : Callback<Playlist> {
-                override fun onResponse(call: Call<Playlist>, response: Response<Playlist>) {
-                    if (response.isSuccessful) {
-                        data.value = Resource.success(response.body())
-                    }
-                }
-
-                override fun onFailure(call: Call<Playlist>, t: Throwable) {
-                    data.value = Resource.error(t.stackTrace.toString(), null, null)
-                }
-            })
-        return data
+    fun getPlaylists(): LiveData<Resource<Playlist>> = liveData(Dispatchers.IO) {
+        emit(Resource.loading())
+        val response = dataSource.getPlaylists()
+        emit(response)
     }
 
-    fun getPlaylistItems(playlistId: String, itemCount: Int): LiveData<Resource<PlaylistItem>> {
-        val data = MutableLiveData<Resource<PlaylistItem>>()
+    fun getPlaylistItems(playlistId: String, itemCount: Int): LiveData<Resource<PlaylistItem>> =
+        liveData(Dispatchers.IO) {
+            emit(Resource.loading())
+            val response = dataSource.getPlaylistItems(playlistId, itemCount)
+            emit(response)
+        }
 
-        data.value = Resource.loading()
-
-        apiService.getPlaylistItems(BuildConfig.API_KEY, Constant.part, playlistId, itemCount)
-            .enqueue(object : Callback<PlaylistItem> {
-                override fun onResponse(
-                    call: Call<PlaylistItem>,
-                    response: Response<PlaylistItem>
-                ) {
-                    if (response.isSuccessful)
-                        data.value = Resource.success(response.body())
-                }
-
-                override fun onFailure(call: Call<PlaylistItem>, t: Throwable) {
-                    data.value = Resource.error(t.stackTrace.toString(), null, null)
-                }
-            })
-        return data
+    fun getVideo(videoId: String): LiveData<Resource<Video>> = liveData(Dispatchers.IO) {
+        emit(Resource.loading())
+        val response = dataSource.getVideo(videoId)
+        emit(response)
     }
 }

@@ -10,7 +10,8 @@ import coil.load
 import com.geektech.youtubeapi.data.remote.model.Item
 import com.geektech.youtubeapi.databinding.ItemPlaylistItemBinding
 
-class PlaylistItemAdapter : Adapter<PlaylistItemAdapter.PlaylistItemViewHolder>() {
+class PlaylistItemAdapter(private val onClick: (videoId: String) -> Unit) :
+    Adapter<PlaylistItemAdapter.PlaylistItemViewHolder>() {
     private val data = arrayListOf<Item>()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -44,6 +45,7 @@ class PlaylistItemAdapter : Adapter<PlaylistItemAdapter.PlaylistItemViewHolder>(
             with(binding) {
                 ivImage.load(model.snippet.thumbnails.medium.url)
                 tvTitle.text = model.snippet.title
+                itemView.setOnClickListener { onClick(model.contentDetails.videoId) }
             }
         }
     }

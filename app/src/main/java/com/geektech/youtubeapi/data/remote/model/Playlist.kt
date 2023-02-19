@@ -28,7 +28,8 @@ data class Medium(
 
 
 data class ContentDetails(
-    val itemCount : Int
+    val itemCount : Int,
+    val videoId : String
 )
 
 

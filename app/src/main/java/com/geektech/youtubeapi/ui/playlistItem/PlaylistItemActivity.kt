@@ -1,5 +1,6 @@
 package com.geektech.youtubeapi.ui.playlistItem
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -12,11 +13,15 @@ import com.geektech.youtubeapi.data.remote.model.PlaylistInfo
 import com.geektech.youtubeapi.databinding.ActivityPlaylistItemBinding
 import com.geektech.youtubeapi.ui.playlist.PlaylistActivity.Companion.PLAYLIST_INFO
 import com.geektech.youtubeapi.ui.playlistItem.adapter.PlaylistItemAdapter
+import com.geektech.youtubeapi.ui.video.VideoActivity
 
 class PlaylistItemActivity : BaseActivity<ActivityPlaylistItemBinding, PlaylistItemViewModel>() {
-    private val adapter by lazy { PlaylistItemAdapter() }
+
+    private val adapter by lazy { PlaylistItemAdapter(this::onCLick) }
+
     private val playlistInfo by lazy { intent.getSerializableExtra(PLAYLIST_INFO) as PlaylistInfo }
     private var playlistItemData = listOf<Item>()
+    private var videosId = arrayListOf<String>()
 
     override fun isConnection() {
         super.isConnection()
@@ -46,10 +51,23 @@ class PlaylistItemActivity : BaseActivity<ActivityPlaylistItemBinding, PlaylistI
 
     override fun initObserver() {
         super.initObserver()
+
+        getPlaylistItems()
+    }
+
+    private fun getVideosId() {
+        viewModel.getVideosId(playlistItemData)
+        viewModel.liveVideosId.observe(this){
+            videosId.addAll(it)
+        }
+    }
+
+    private fun getPlaylistItems() {
         viewModel.getPlaylistItems(playlistInfo.id, playlistInfo.itemCount).observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     playlistItemData = it.data!!.items
+                    getVideosId()
                     adapter.addData(playlistItemData)
                 }
                 Status.ERROR -> {
@@ -67,5 +85,18 @@ class PlaylistItemActivity : BaseActivity<ActivityPlaylistItemBinding, PlaylistI
 
     override fun inflateViewBinding(): ActivityPlaylistItemBinding {
         return ActivityPlaylistItemBinding.inflate(layoutInflater)
+    }
+
+    private fun onCLick(videoId: String) {
+        Intent(this, VideoActivity::class.java).apply {
+            putExtra(VIDEO_KEY, videoId)
+            putExtra(VIDEOS_KEY, videosId)
+            startActivity(this)
+        }
+    }
+
+    companion object {
+        const val VIDEO_KEY = "video.key"
+        const val VIDEOS_KEY = "videos.key"
     }
 }
